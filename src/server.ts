@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import "dotenv/config";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "../generated/prisma/client.js";
 
 const app = express();
 const port = process.env.PORT;
@@ -23,9 +23,9 @@ app.listen(port, () => {
  * description: add a user
  */
 app.post(version + "/user", async (req: Request, res: Response) => {
-	const { firstName, lastName, email } = req.body;
+	const { first_name, last_name, email } = req.body;
 	const user = await prisma.user.create({
-		data: { firstName, lastName, email },
+		data: { firstName: first_name, lastName: last_name, email },
 	});
 	res.json(user);
 });

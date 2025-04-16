@@ -28,7 +28,7 @@ model Item {
 
 model User {
   id        Int     @id @default(autoincrement())
-  firstName String?
+  firstName String? 
   lastName  String
   email     String  @unique
   items     Item[]
