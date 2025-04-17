@@ -24,12 +24,14 @@ model Item {
   createdAt   DateTime  @default(now())
   userId      Int
   user        User      @relation(fields: [userId], references: [id])
+  deleted     Boolean   @default(false)
 }
 
 model User {
   id        Int     @id @default(autoincrement())
-  firstName String? 
+  firstName String?
   lastName  String
   email     String  @unique
   items     Item[]
+  deleted   Boolean @default(false)
 }
