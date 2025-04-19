@@ -17,6 +17,7 @@ app.get(`/api/${version}/users`, handlers.fetchAllUsers);
 app.get(`/api/${version}/user`, handlers.fetchUser);
 app.put(`/api/${version}/user`, handlers.updateUser);
 app.delete(`/api/${version}/user`, handlers.deleteUser);
+app.post(`/api/${version}/item`, handlers.createItem);
 
 app.listen(port, () => {
 	console.log(`Listening on port ${port}`);
