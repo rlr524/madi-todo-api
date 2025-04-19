@@ -77,4 +77,14 @@ export const handlers = {
 
 		res.json(`User ${id} successfully flagged as deleted`);
 	},
+
+	async createItem(req: Request, res: Response) {
+		const { title, description, due, user_id } = req.body;
+
+		const item = await prisma.item.create({
+			data: {title, description, due, userId: user_id}
+		})
+
+		res.json(item)
+	}
 };
