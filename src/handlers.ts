@@ -34,7 +34,6 @@ export const handlers = {
 	},
 
 	async updateUser(req: Request, res: Response) {
-		// const { id } = req.params;
 		const id = req.body.id;
 		const { first_name, last_name, email } = req.body;
 
@@ -49,7 +48,6 @@ export const handlers = {
 		}
 
 		user = await prisma.user.update({
-			// where: { id: Number(id) },
 			where: { id: id },
 			data: { firstName: first_name, lastName: last_name, email },
 		});
@@ -82,9 +80,29 @@ export const handlers = {
 		const { title, description, due, user_id } = req.body;
 
 		const item = await prisma.item.create({
-			data: {title, description, due, userId: user_id}
-		})
+			data: { title, description, due, userId: user_id },
+		});
 
-		res.json(item)
-	}
+		res.json(item);
+	},
+
+	async fetchAllItems(req: Request, res: Response) {
+		const items = await prisma.item.findMany();
+		res.json(items);
+	},
+
+	async fetchItem(req: Request, res: Response) {
+		const { id } = req.params;
+		const item = await prisma.item.findUnique({
+			where: {
+				id: Number(id),
+			},
+		});
+
+		if (!item) {
+			res.json(`The item with the id of ${id} was not found`);
+		}
+
+		res.json(item);
+	},
 };
