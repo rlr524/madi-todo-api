@@ -105,7 +105,7 @@ export const handlers = {
 
 	async updateItem(req: Request, res: Response) {
 		const id = req.body.id;
-		const { title, description, due, priority, status } = req.body;
+		const { title, description, due, priority, status, user_id } = req.body;
 
 		let item = await prisma.item.findUnique({
 			where: {
@@ -119,7 +119,7 @@ export const handlers = {
 
 		item = await prisma.item.update({
 			where: { id: id },
-			data: { title, description, due, priority, status },
+			data: { title, description, due, priority, status, userId: user_id },
 		});
 
 		res.json(item);
