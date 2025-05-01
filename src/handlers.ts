@@ -18,13 +18,10 @@ export const handlers = {
 	},
 
 	async fetchUser(req: Request, res: Response) {
-		// TODO: Fix this to use a url parameter for the id, not the body as technically a GET
-		// request doesn't need to send a request body, so we shouldn't be passing a request body
-		// just to pass an id that we can pass as a url parameter.
-		const id = req.body.id;
+		const { id } = req.params;
 		const user = await prisma.user.findUnique({
 			where: {
-				id: id,
+				id: Number(id),
 			},
 		});
 		if (!user) {
@@ -73,7 +70,7 @@ export const handlers = {
 			data: { deleted: true },
 		});
 
-		res.json(`User ${id} successfully flagged as deleted`);
+		res.json(`User ${id} successfully deleted`);
 	},
 
 	async createItem(req: Request, res: Response) {
@@ -104,5 +101,48 @@ export const handlers = {
 		}
 
 		res.json(item);
+	},
+
+	async updateItem(req: Request, res: Response) {
+		const id = req.body.id;
+		const { title, description, due, priority, status } = req.body;
+
+		let item = await prisma.item.findUnique({
+			where: {
+				id: id,
+			},
+		});
+
+		if (!item) {
+			res.json(`The item with item id ${id} was not found`);
+		}
+
+		item = await prisma.item.update({
+			where: { id: id },
+			data: { title, description, due, priority, status },
+		});
+
+		res.json(item);
+	},
+
+	async deleteItem(req: Request, res: Response) {
+		const id = req.body.id;
+
+		let item = await prisma.item.findUnique({
+			where: {
+				id: id,
+			},
+		});
+
+		if (!item) {
+			res.json(`The item with the id of ${id} was not found`);
+		}
+
+		item = await prisma.item.update({
+			where: { id: id },
+			data: { deleted: true },
+		});
+
+		res.json(`Item ${id} successfully deleted`);
 	},
 };
