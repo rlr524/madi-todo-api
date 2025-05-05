@@ -22,6 +22,7 @@ model Item {
   priority    String    @default("medium")
   status      String    @default("incomplete")
   createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
   userId      Int
   user        User      @relation(fields: [userId], references: [id])
   deleted     Boolean   @default(false)
@@ -33,6 +34,7 @@ model User {
   lastName  String
   email     String   @unique
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   items     Item[]
   deleted   Boolean  @default(false)
 }
